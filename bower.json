@@ -1,0 +1,14 @@
+{
+  "name": "gulp-bower-overrides",
+	"description": "used for testing, do not install!",
+  "version": "0.0.0",
+  "private": true,
+  "authors": [
+    "Gilad Gray <ggray@palantir.com>"
+  ],
+	"overrides": {
+		"backbone.marionette": {
+			"main": "./lib/backbone.marionette.js"
+		}
+	}
+}
