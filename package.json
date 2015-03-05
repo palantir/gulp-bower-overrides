@@ -1,6 +1,6 @@
 {
   "name": "gulp-bower-overrides",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "merge bower overrides into bower.json files",
   "license": "MIT",
   "repository": "palantir/gulp-bower-overrides",
@@ -20,9 +20,9 @@
     "overrides"
   ],
   "dependencies": {
-    "extend": "^2.0.0",
-    "gulp-util": "^3.0.1",
-    "through2-map": "^1.4.0"
+    "extend": "2.0.0",
+    "gulp-util": "3.0.1",
+    "through2-map": "1.4.0"
   },
   "devDependencies": {
     "mocha": "*"
