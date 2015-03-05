@@ -1,0 +1,5 @@
+{
+  "backbone.marionette": {
+    "main": "shaboom.css"
+  }
+}

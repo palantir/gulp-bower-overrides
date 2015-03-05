@@ -5,19 +5,20 @@ var gutil = require('gulp-util');
 var extend = require('extend');
 
 function loadBowerJson(options) {
-	if (options.bowerContents) {
-		return options.bowerContents;
-	}
-	var bowerPath = options.bowerPath || './bower.json';
-	return require(bowerPath);
+	return require(options.bowerPath || './bower.json');
+}
+
+function getBowerOverrides(options) {
+	// get overrides from options or bower.json file
+	var overrides = options.overrides || loadBowerJson(options).overrides || {};
+	// path to a .json file or inline object literal
+	return (typeof overrides === 'string') ? require(overrides) : overrides;
 }
 
 module.exports = function (options) {
 	options = options || {};
 
-	var bowerOverrides = loadBowerJson(options).overrides;
-
-	if (!bowerOverrides) { return gutil.noop(); }
+	var bowerOverrides = getBowerOverrides(options);
 
 	return map.obj(function (file) {
 		if (file.isStream()) {
