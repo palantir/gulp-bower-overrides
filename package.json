@@ -4,11 +4,7 @@
   "description": "merge bower overrides into bower.json files",
   "license": "MIT",
   "repository": "palantir/gulp-bower-overrides",
-  "author": {
-    "name": "Gilad Gray",
-    "email": "ggray@palantir.com",
-    "url": "https://github.com/giladgray"
-  },
+  "author": "Palantir Technologies",
   "engines": {
     "node": ">=0.10.0"
   },

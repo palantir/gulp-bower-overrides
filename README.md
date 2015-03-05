@@ -1,4 +1,4 @@
-# gulp-bower-overrides [![Build Status](https://travis-ci.org/giladgray/gulp-bower-overrides.svg?branch=master)](https://travis-ci.org/giladgray/gulp-bower-overrides)
+# gulp-bower-overrides [![Build Status](https://travis-ci.org/palantir/gulp-bower-overrides.svg?branch=master)](https://travis-ci.org/palantir/gulp-bower-overrides)
 
 > Merge overrides into bower.json files to produce "fixed" packages.
 
@@ -77,4 +77,4 @@ Path to a .json file or object literal value containing package overrides. If pr
 
 ## License
 
-MIT © [Gilad Gray](https://github.com/giladgray)
+MIT © [Palantir Technologies](https://palantir.com/)
