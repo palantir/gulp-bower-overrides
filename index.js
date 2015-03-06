@@ -1,6 +1,7 @@
 'use strict';
 
 var map = require('through2-map');
+var glob = require('glob');
 var gutil = require('gulp-util');
 var extend = require('extend');
 
@@ -13,6 +14,19 @@ function getBowerOverrides(options) {
   var overrides = options.overrides || loadBowerJson(options).overrides || {};
   // path to a .json file or inline object literal
   return (typeof overrides === 'string') ? require(overrides) : overrides;
+}
+
+// expands globs for given package name and main block using node-glob.
+function expandGlobs(name, main) {
+  if (!main) { return; }
+  // TODO: custom bower components path
+  var cwd = process.cwd() + '/bower_components/' + name;
+  // expand each glob in main (coerce it to array first)
+  var globs = [].concat(main).map(function(pattern) {
+    return glob.sync(pattern, {cwd: cwd});
+  });
+  // flatten globs to single array
+  return [].concat.apply([], globs);
 }
 
 // wrapper around map.obj that calls iterator function for each file with parsed JSON contents.
@@ -39,6 +53,12 @@ function mergeBowerOverrides(options) {
   options = options || {};
 
   var bowerOverrides = getBowerOverrides(options);
+
+  if (options.expandGlobs) {
+    Object.keys(bowerOverrides).forEach(function(name) {
+      bowerOverrides[name].main = expandGlobs(name, bowerOverrides[name].main);
+    });
+  }
 
   return mapJSON(function(file, json) {
     // get name of package from file path, but fallback to json

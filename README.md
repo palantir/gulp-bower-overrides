@@ -84,6 +84,19 @@ Type: `String`, `Object`
 Path to a .json file or object literal value containing package overrides. If provided, this value
 will be used instead of loading from a bower.json file.
 
+##### expandGlobs
+
+Type: `Boolean`  
+Default: `false`
+
+Expand globs in `main` block to all matched files using
+[node-glob](https://github.com/isaacs/node-glob). This is useful because the bower.json spec [does
+not support globs](https://github.com/bower/bower.json-spec/issues/30) in `main` by default, but
+some plugins do.
+
+**NOTE:** Custom install directories are not supported at this time. Currently, bower packages MUST
+be installed to `bower_components/` for this option to work correctly.
+
 ### bowerOverrides.mapJSON(iterator)
 
 A thin wrapper around `through2-map.obj()` that passes the parsed JSON content of each file to the
