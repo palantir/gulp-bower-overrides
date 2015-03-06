@@ -54,16 +54,15 @@ function mergeBowerOverrides(options) {
 
   var bowerOverrides = getBowerOverrides(options);
 
-  if (options.expandGlobs) {
-    Object.keys(bowerOverrides).forEach(function(name) {
-      bowerOverrides[name].main = expandGlobs(name, bowerOverrides[name].main);
-    });
-  }
 
   return mapJSON(function(json, file) {
     // get name of package from file path, but fallback to json
     var name = file.relative.substring(0, file.relative.indexOf('/')) || json.name;
-    return extend(json, bowerOverrides[name]);
+    extend(json, bowerOverrides[name]);
+    if (options.expandGlobs) {
+      json.main = expandGlobs(name, json.main);
+    }
+    return json;
   });
 }
 

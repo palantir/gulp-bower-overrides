@@ -1,15 +1,18 @@
 {
   "name": "gulp-bower-overrides",
-	"description": "used for testing, do not install!",
+  "description": "used for testing, do not install!",
   "version": "0.0.0",
   "private": true,
   "authors": [
     "Gilad Gray <ggray@palantir.com>"
   ],
-	"overrides": {
-		"backbone.marionette": {
-			"main": "override.js",
-      "version": "GOTCHA!"
-		}
-	}
+  "dependencies": {
+    "lodash": "2.4.1",
+    "cryptojslib": "~3.1.2"
+  },
+  "overrides": {
+    "lodash": {
+      "main": "dist/lodash.min.js"
+    }
+  }
 }

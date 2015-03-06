@@ -5,13 +5,15 @@ var assert = require('assert');
 var gutil = require('gulp-util');
 var bowerOverrides = require('./');
 
-var mainBowerJson = require('./bower.json');
 
 function parseJson(file) {
   return JSON.parse(file.contents.toString());
 }
 
 function writeToStream(stream, contents) {
+  if (typeof contents === 'string') {
+    contents = fs.readFileSync(contents);
+  }
   stream.write(new gutil.File({
     base: __dirname,
     path: __dirname + '/bower.json',
@@ -24,7 +26,7 @@ function testStream(stream, overrides, done, files) {
   stream.on('data', function (file) {
     var json = parseJson(file);
     Object.keys(overrides[json.name]).forEach(function(key) {
-      assert.strictEqual(json[key], overrides[json.name][key]);
+      assert.deepEqual(json[key], overrides[json.name][key]);
     });
   });
 
@@ -38,14 +40,16 @@ function testStream(stream, overrides, done, files) {
 }
 
 describe('gulp-bower-overrides', function() {
+  var bowerJson = require('./fixtures/bower.json');
+
   it('should merge overrides block into bower.json src', function(done) {
+    var rootBowerJson = require('./bower.json');
     var stream = bowerOverrides();
 
-    testStream(stream, mainBowerJson.overrides, done, './fixtures/bower-marionette.json');
+    testStream(stream, rootBowerJson.overrides, done, './fixtures/bower-marionette.json');
   });
 
   it('should load file at bowerPath', function(done) {
-    var bowerJson = require('./fixtures/bower.json');
     var stream = bowerOverrides({bowerPath: './fixtures/bower.json'});
 
     testStream(stream, bowerJson.overrides, done,
@@ -70,5 +74,16 @@ describe('gulp-bower-overrides', function() {
     testStream(stream, require(overrides), done, './fixtures/bower-marionette.json');
   });
 
+  it('should expand globs in main when option is set', function(done) {
+    var stream = bowerOverrides({bowerPath: './fixtures/bower.json', expandGlobs: true});
 
+    stream.on('data', function(file) {
+      var json = parseJson(file);
+      assert(Array.isArray(json.main), 'glob was not expanded');
+    });
+    stream.on('end', done);
+
+    // this plugin has a glob as its main entry. we expect it to be expanded to array of files.
+    writeToStream(stream, './fixtures/bower_components/cryptojslib/bower.json');
+  });
 });
