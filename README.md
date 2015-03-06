@@ -104,7 +104,7 @@ iterator and updates the content with stringified return value.
 
 #### iterator
 
-Map function to call for each file in stream. Receives `(file, json)` arguments and returns new JSON
+Map function to call for each file in stream. Receives `(json, file)` arguments and returns new JSON
 content.
 
 ## License

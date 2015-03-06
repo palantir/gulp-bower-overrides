@@ -39,7 +39,7 @@ function mapJSON(iterator) {
 
     try {
       var json = JSON.parse(file.contents.toString());
-      json = iterator.call(this, file, json);
+      json = iterator.call(this, json, file);
       file.contents = new Buffer(JSON.stringify(json, null, 2));
       return file;
     } catch (err) {
@@ -60,7 +60,7 @@ function mergeBowerOverrides(options) {
     });
   }
 
-  return mapJSON(function(file, json) {
+  return mapJSON(function(json, file) {
     // get name of package from file path, but fallback to json
     var name = file.relative.substring(0, file.relative.indexOf('/')) || json.name;
     return extend(json, bowerOverrides[name]);
