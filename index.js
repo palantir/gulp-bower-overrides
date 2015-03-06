@@ -1,26 +1,25 @@
 'use strict';
 
 var map = require('through2-map');
+var path = require('path');
 var glob = require('glob');
 var gutil = require('gulp-util');
 var extend = require('extend');
 
-function loadBowerJson(options) {
-  return require(options.bowerPath || process.cwd() + '/bower.json');
+function loadProjectFile(filepath) {
+  return require(path.join(process.cwd(), filepath));
 }
 
 function getBowerOverrides(options) {
   // get overrides from options or bower.json file
-  var overrides = options.overrides || loadBowerJson(options).overrides || {};
+  var overrides = options.overrides || loadProjectFile(options.bowerPath).overrides || {};
   // path to a .json file or inline object literal
   return (typeof overrides === 'string') ? require(overrides) : overrides;
 }
 
-// expands globs for given package name and main block using node-glob.
-function expandGlobs(name, main) {
+// expands `main` block (string or array of strings) with given cwd path
+function expandGlobs(main, cwd) {
   if (!main) { return; }
-  // TODO: custom bower components path
-  var cwd = process.cwd() + '/bower_components/' + name;
   // expand each glob in main (coerce it to array first)
   var globs = [].concat(main).map(function(pattern) {
     return glob.sync(pattern, {cwd: cwd});
@@ -50,18 +49,24 @@ function mapJSON(iterator) {
 
 // this is the plugin itself: merge overrides into each bower.json contents
 function mergeBowerOverrides(options) {
-  options = options || {};
+  options = extend({
+    bowerPath: 'bower.json',
+    bowerComponentsPath: 'bower_components'
+  }, options);
 
   var bowerOverrides = getBowerOverrides(options);
-
 
   return mapJSON(function(json, file) {
     // get name of package from file path, but fallback to json
     var name = file.relative.substring(0, file.relative.indexOf('/')) || json.name;
+
     extend(json, bowerOverrides[name]);
+
     if (options.expandGlobs) {
-      json.main = expandGlobs(name, json.main);
+      var cwd = path.join(process.cwd(), options.bowerComponentsPath, name);
+      json.main = expandGlobs(json.main, cwd);
     }
+
     return json;
   });
 }

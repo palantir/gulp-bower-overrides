@@ -75,11 +75,16 @@ describe('gulp-bower-overrides', function() {
   });
 
   it('should expand globs in main when option is set', function(done) {
-    var stream = bowerOverrides({bowerPath: './fixtures/bower.json', expandGlobs: true});
+    var stream = bowerOverrides({
+      expandGlobs: true,
+      bowerComponentsPath: './fixtures/bower_components/',
+      bowerPath: './fixtures/bower.json',
+    });
 
     stream.on('data', function(file) {
       var json = parseJson(file);
       assert(Array.isArray(json.main), 'glob was not expanded');
+      assert.equal(json.main.length, 88, 'unexpected glob size');
     });
     stream.on('end', done);
 

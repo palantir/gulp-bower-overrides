@@ -75,7 +75,15 @@ The plugin itself. Merges overrides with each bower.json.
 Type: `String`  
 Default: `'./bower.json'`
 
-Path to project bower.json file with `overrides` block.
+Path to project bower.json file with `overrides` block. Defaults to `bower.json` in root project directory.
+
+##### bowerComponentsPath
+
+Type: `String`  
+Default: `'./bower_components/'`
+
+Path to bower package install directory. Defaults to `bower_components/` in root project directory.
+Used to expand globs if `expandGlobs` option is enabled.
 
 ##### overrides
 
@@ -94,8 +102,8 @@ Expand globs in `main` block to all matched files using
 not support globs](https://github.com/bower/bower.json-spec/issues/30) in `main` by default, but
 some plugins do.
 
-**NOTE:** Custom install directories are not supported at this time. Currently, bower packages MUST
-be installed to `bower_components/` for this option to work correctly.
+**NOTE:** If you're using a custom install directory, be sure to set the `bowerComponentsPath`
+option above to that path.
 
 ### bowerOverrides.mapJSON(iterator)
 
