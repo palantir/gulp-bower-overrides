@@ -22,14 +22,14 @@ function parseJson(file) {
 
 describe('gulp-bower-overrides', function() {
   it('should merge overrides block into bower.json src', function(done) {
-		var stream = bowerOverrides();
+    var stream = bowerOverrides();
 
-		stream.on('data', function (file) {
+    stream.on('data', function (file) {
       var json = parseJson(file);
-			assert.strictEqual(json.main, mainBowerJson.overrides[json.name].main);
-		});
+      assert.strictEqual(json.main, mainBowerJson.overrides[json.name].main);
+    });
 
-		stream.on('end', done);
+    stream.on('end', done);
 
     writeToStream(stream, fs.readFileSync('./fixtures/bower-marionette.json'));
   });
@@ -38,15 +38,15 @@ describe('gulp-bower-overrides', function() {
     it('should load file at bowerPath', function(done) {
       var bowerJson = require('./fixtures/bower.json');
 
-  		var stream = bowerOverrides({bowerPath: './fixtures/bower.json'});
+      var stream = bowerOverrides({bowerPath: './fixtures/bower.json'});
 
-  		stream.on('data', function (file) {
+      stream.on('data', function (file) {
         var json = parseJson(file);
-  			assert.strictEqual(json.main, bowerJson.overrides[json.name].main);
-  			assert.strictEqual(json.version, bowerJson.overrides[json.name].version);
-  		});
+        assert.strictEqual(json.main, bowerJson.overrides[json.name].main);
+        assert.strictEqual(json.version, bowerJson.overrides[json.name].version);
+      });
 
-  		stream.on('end', done);
+      stream.on('end', done);
 
       writeToStream(stream, fs.readFileSync('./fixtures/bower-marionette.json'));
     });
@@ -58,14 +58,14 @@ describe('gulp-bower-overrides', function() {
         }
       };
 
-  		var stream = bowerOverrides({overrides: overrides});
+      var stream = bowerOverrides({overrides: overrides});
 
-  		stream.on('data', function (file) {
+      stream.on('data', function (file) {
         var json = parseJson(file);
-  			assert.strictEqual(json.main, overrides[json.name].main);
-  		});
+        assert.strictEqual(json.main, overrides[json.name].main);
+      });
 
-  		stream.on('end', done);
+      stream.on('end', done);
 
       writeToStream(stream, fs.readFileSync('./fixtures/bower-marionette.json'));
     });
@@ -73,14 +73,14 @@ describe('gulp-bower-overrides', function() {
     it('should load overrides from file if value is string', function(done) {
       var overrides = './fixtures/overrides.json';
 
-  		var stream = bowerOverrides({overrides: overrides});
+      var stream = bowerOverrides({overrides: overrides});
 
-  		stream.on('data', function (file) {
+      stream.on('data', function (file) {
         var json = parseJson(file);
-  			assert.strictEqual(json.main, require(overrides)[json.name].main);
-  		});
+        assert.strictEqual(json.main, require(overrides)[json.name].main);
+      });
 
-  		stream.on('end', done);
+      stream.on('end', done);
 
       writeToStream(stream, fs.readFileSync('./fixtures/bower-marionette.json'));
     });
