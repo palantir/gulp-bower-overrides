@@ -2,7 +2,7 @@
 
 var fs = require('fs');
 var assert = require('assert');
-var gutil = require('gulp-util');
+var File = require('vinyl');
 var bowerOverrides = require('./');
 
 
@@ -14,7 +14,7 @@ function writeToStream(stream, contents) {
   if (typeof contents === 'string') {
     contents = fs.readFileSync(contents);
   }
-  stream.write(new gutil.File({
+  stream.write(new File({
     base: __dirname,
     path: __dirname + '/bower.json',
     contents: contents
