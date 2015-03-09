@@ -3,7 +3,6 @@
 var map = require('through2-map');
 var path = require('path');
 var glob = require('glob');
-var gutil = require('gulp-util');
 var extend = require('extend');
 
 function loadProjectFile(filepath) {
@@ -33,7 +32,7 @@ function expandGlobs(main, cwd) {
 function mapJSON(iterator) {
   return map.obj(function(file) {
     if (file.isStream()) {
-      this.emit('error', new gutil.PluginError('gulp-bower-overrides', 'Streaming not supported'));
+      this.emit('error', new Error('gulp-bower-overrides: Streaming not supported at this time.'));
     }
 
     try {
@@ -42,7 +41,7 @@ function mapJSON(iterator) {
       file.contents = new Buffer(JSON.stringify(json, null, 2));
       return file;
     } catch (err) {
-      this.emit('error', new gutil.PluginError('gulp-bower-overrides', err));
+      this.emit('error', err);
     }
   });
 }
