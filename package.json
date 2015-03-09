@@ -1,6 +1,6 @@
 {
   "name": "gulp-bower-overrides",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "merge bower overrides into bower.json files",
   "license": "MIT",
   "repository": "palantir/gulp-bower-overrides",
